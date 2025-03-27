@@ -57,7 +57,7 @@ const Header = () => {
         </div>
 
         {/* Notification Bell */}
-        <div className="relative cursor-pointer">
+        <div className="relative cursor-pointer mr-2">
           <Bell className="w-6 h-6 text-gray-700" />
           <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
             3
