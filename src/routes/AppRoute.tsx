@@ -1,7 +1,9 @@
 // src/routes/Route.tsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import PublicRoute from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
+import UserLayout from '../layouts/user';
+import publicRoutes from './PublicRoute';
+import { Fragment } from 'react/jsx-runtime';
 
 
 const AppRoute = () => {
@@ -9,7 +11,18 @@ const AppRoute = () => {
     <Router>
       <Routes>
         {/* Public routes */}
-        <>{PublicRoute()}</>
+        {publicRoutes.map((route, index) => {
+          // Chọn layout dựa trên requiresUser
+          const Layout = route.requiresUser ? UserLayout : Fragment;
+
+          return (
+            <Route
+              key={index}
+              path={route.path}
+              element={<Layout>{route.element}</Layout>}
+            />
+          );
+        })}
 
         {/* Private routes */}
         <Route path="/admin/*" element={<PrivateRoute />} />

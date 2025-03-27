@@ -49,10 +49,6 @@ const Footer: React.FC = () => {
         TOEIC® is a registered trademark of Educational Testing Service (ETS). This web is not affiliated with or endorsed by Educational Testing Service.
       </div>
 
-      {/* Scroll to top button */}
-      <button className="fixed bottom-10 right-10 bg-orange-600 p-3 rounded-full shadow-lg cursor-pointer text-white">
-        ↑
-      </button>
     </footer>
   );
 };
