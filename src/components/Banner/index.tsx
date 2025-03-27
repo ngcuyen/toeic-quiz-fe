@@ -69,7 +69,7 @@ const Banner: React.FC = () => {
           >
             <div
               className={`absolute ${
-                banner.position === 'left' ? 'left-10 text-left' : 'right-10 text-right'
+                banner.position === 'left' ? 'left-11 text-left' : 'right-11 text-right'
               } px-6 rounded-xl max-w-xl text-white`}
               style={{ top: '80px' }}
             >
