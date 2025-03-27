@@ -2,7 +2,7 @@ import Footer from './Footer';
 import Header from './Header';
 import TopHeader from './TopHeader';
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const UserLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
       <div>
         <TopHeader />
@@ -13,4 +13,4 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     );
   };
 
-export default Layout;
+export default UserLayout;
