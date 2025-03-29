@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import { Bell, ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [active, setActive] = useState("TRANG CHỦ");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const menuItems = ["TRANG CHỦ", "ĐỀ THI", "LỊCH SỰ LÀM BÀI"];
+  const navigate = useNavigate();
+
+  const menuItems = [
+    { name: "TRANG CHỦ", path: "/" },
+    { name: "ĐỀ THI", path: "/exams" },
+    { name: "LỊCH SỬ LÀM BÀI", path: "/history-exam" },
+    { name: "LIÊN HỆ", path: "/contact" },
+  ];
 
   return (
     <div className="bg-white shadow-md py-4 sticky top-0 z-10">
@@ -14,13 +22,16 @@ const Header = () => {
         <div className="flex items-center gap-8">
           {menuItems.map((item) => (
             <div
-              key={item}
-              onClick={() => setActive(item)}
+              key={item.name}
+              onClick={() => {
+                setActive(item.name);
+                navigate(item.path);
+              }}
               className={`cursor-pointer font-semibold uppercase ${
-                active === item ? "text-orange-600" : "text-black"
+                active === item.name ? "text-orange-600" : "text-black"
               } hover:text-orange-600`}
             >
-              {item}
+              {item.name}
             </div>
           ))}
 
