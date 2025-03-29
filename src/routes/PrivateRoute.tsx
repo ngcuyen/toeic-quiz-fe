@@ -1,14 +1,18 @@
-import { Routes } from 'react-router-dom';
-// import Home from '../pages/Home';
+import ExamHistoryList from "../pages/Exam History";
+import ReadingTest from "../pages/Reading Test";
 
 
-export default function PrivateRoute() {
-  return (
-    <Routes>
-      {/* <Route path="/" element={<Home />} /> */}
-      {/* <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/about" element={<AboutPage />} /> */}
-    </Routes>
-  );
-}
+const privateRoutes = [
+  {
+    path: '/readingg-test',
+    element: <ReadingTest />,
+    requiresUser: true, // 
+  },
+  {
+    path: '/history-exam',
+    element: <ExamHistoryList />,
+    requiresUser: true, // 
+  },
+];
+
+export default privateRoutes;

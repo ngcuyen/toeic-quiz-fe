@@ -1,4 +1,5 @@
 import Home from '../pages/Home';
+import Signin from '../pages/Signin';
 
 const publicRoutes = [
   {
@@ -6,7 +7,11 @@ const publicRoutes = [
     element: <Home />,
     requiresUser: true, // ✅ Đánh dấu route cần UserLayout
   },
-  // Thêm các route khác nếu cần
+  {
+    path: '/login',
+    element: <Signin />,
+    requiresUser: false, // ✅ Đánh dấu route cần UserLayout
+  },
 ];
 
 export default publicRoutes;

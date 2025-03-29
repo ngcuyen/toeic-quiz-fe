@@ -53,7 +53,7 @@ const QuestionTypeList = () => {
       <h2 className="text-3xl font-bold mb-10">Luyện READING
       <span className="w-[120px] h-1 bg-orange-500 mt-1 block"></span>
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[66px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-[58px]">
         {questionTypes.map((item, index) => (
           <QuestionTypeCard
             key={index}

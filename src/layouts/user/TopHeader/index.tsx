@@ -35,7 +35,7 @@ const TopHeader = () => {
           <a
             href="/login"
             className="flex items-center gap-2 text-orange-600 px-3 py-1 border border-gray-600 rounded-md 
-            hover:bg-orange-600 hover:text-white transition"
+            hover:bg-orange-600 hover:text-white transition hover:border-orange-400 outline-none hover:ring-1 hover:ring-orange-200"
           >
             <LogIn className="w-4 h-4" />
             <span>Đăng nhập</span>
