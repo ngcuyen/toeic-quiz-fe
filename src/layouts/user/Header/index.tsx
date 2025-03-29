@@ -5,7 +5,7 @@ const Header = () => {
   const [active, setActive] = useState("TRANG CHỦ");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const menuItems = ["TRANG CHỦ", "ĐỀ THI", "KHÓA HỌC"];
+  const menuItems = ["TRANG CHỦ", "ĐỀ THI", "LỊCH SỰ LÀM BÀI"];
 
   return (
     <div className="bg-white shadow-md py-4 sticky top-0 z-10">

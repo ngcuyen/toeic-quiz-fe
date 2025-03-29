@@ -24,7 +24,7 @@ interface QuestionTypeCardProps {
     color, // Nhận color từ props
   }) => {
     return (
-<div className={`relative w-64 rounded-2xl shadow-md`}>
+<div className={`relative w-[266px] rounded-2xl shadow-md`}>
       {/* Phần tiêu đề được đẩy lên trên */}
       <div className={`absolute top-0 left-0 w-full text-center min-h-[135px] flex flex-col justify-center ${color} rounded-t-2xl`}>
         <h2 className="text-xl font-bold text-white">{part}</h2>

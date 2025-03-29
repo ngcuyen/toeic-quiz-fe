@@ -1,6 +1,5 @@
 // src/routes/Route.tsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import PrivateRoute from './PrivateRoute';
 import UserLayout from '../layouts/user';
 import publicRoutes from './PublicRoute';
 import { Fragment } from 'react/jsx-runtime';
@@ -25,7 +24,7 @@ const AppRoute = () => {
         })}
 
         {/* Private routes */}
-        <Route path="/admin/*" element={<PrivateRoute />} />
+
       </Routes>
     </Router>
   );
