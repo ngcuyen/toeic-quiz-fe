@@ -20,7 +20,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Thêm để hỗ trợ ES6 và CommonJS modules */
+    "esModuleInterop": true
   },
   "include": ["src"]
 }

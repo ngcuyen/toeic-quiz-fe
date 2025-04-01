@@ -4,7 +4,7 @@ import ReadingTest from "../pages/Reading Test";
 
 const privateRoutes = [
   {
-    path: '/readingg-test',
+    path: '/reading-test',
     element: <ReadingTest />,
     requiresUser: true, // 
   },
