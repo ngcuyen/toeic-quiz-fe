@@ -4,6 +4,7 @@ import UserLayout from '../layouts/user';
 import publicRoutes from './PublicRoute';
 import { Fragment } from 'react/jsx-runtime';
 import privateRoutes from './PrivateRoute';
+import adminRoutes from './AdminRoute';
 
 
 const AppRoute = () => {
@@ -32,6 +33,20 @@ const AppRoute = () => {
           return (
             <Route
               key={index}
+              path={route.path}
+              element={<Layout>{route.element}</Layout>}
+            />
+          );
+        })}
+        
+        {/* Admin routes */}
+        {adminRoutes.map((route, index) => {
+          // Use the specified layout or fall back to Fragment
+          const Layout = route.layout || (route.requiresUser ? UserLayout : Fragment);
+
+          return (
+            <Route
+              key={`admin-${index}`}
               path={route.path}
               element={<Layout>{route.element}</Layout>}
             />
