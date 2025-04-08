@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { createExam } from '../../../api/examApi';
+import { useNavigate } from 'react-router-dom';
 
 const banners = [
   {
@@ -27,6 +29,7 @@ const banners = [
 
 const Banner: React.FC = () => {
   const [current, setCurrent] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,6 +51,25 @@ const Banner: React.FC = () => {
       setCurrent(banners.length - 1); // Khi đang ở banner1 -> quay về banner3
     } else {
       setCurrent((prev) => prev - 1);
+    }
+  };
+
+  const handleCreateExam = async () => {
+    const newExamData = {
+      title: "",
+      description: "",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    // Gọi API tạo exam
+    const createdExam = await createExam(newExamData);
+
+    if (createdExam) {
+      console.log("Exam created successfully:", createdExam);
+      navigate("/reading-test"); // Chuyển hướng đến trang /reading-test nếu tạo thành công
+    } else {
+      console.log("Failed to create exam");
     }
   };
 
@@ -80,6 +102,7 @@ const Banner: React.FC = () => {
               <p className="text-lg mb-7" dangerouslySetInnerHTML={{ __html: banner.desc }} />
 
               <button
+                onClick={handleCreateExam}              
                 className={`px-5 py-3 rounded-full text-white font-semibold transition transform
                   ${banner.position === 'left' ? 'bg-orange-600 hover:bg-orange-700' : 'bg-blue-500 hover:bg-blue-600'}
                   ${banner.desc.includes('<br') ? 'mt-2' : 'mt-4'}

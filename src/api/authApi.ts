@@ -16,10 +16,9 @@ export const loginAction = async (formData: LoginType) => {
         API_ENDPOINTS.USERS.LOGIN,
         formData
       );
-  
       // Success
       const { access_token, refresh_token } = response.data.data;
-  
+      console.log("Access token, ref",access_token, refresh_token);
       // Check the tokens are exist
       if (!access_token || !refresh_token) {
         throw new Error(NOTIFICATIONS.AUTH.TOKEN_MISSED);

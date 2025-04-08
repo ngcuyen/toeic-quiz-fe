@@ -48,7 +48,7 @@ const refreshAccessToken = async () => {
 // Request Interceptor: Add token into headers when send the request
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = getTokenFromCookies("access_token"); // Get sccess_token from cookies
+    const token = getTokenFromCookies("access_token"); // Get asccess_token from cookies
 
     if (token && token !== undefined) {
       config.headers.Authorization = `Bearer ${token}`;

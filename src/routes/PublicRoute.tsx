@@ -6,11 +6,13 @@ const publicRoutes = [
     path: '/',
     element: <Home />,
     requiresUser: true, // ✅ Đánh dấu route cần UserLayout
+    requiresAdmin: false,
   },
   {
     path: '/login',
     element: <Signin />,
     requiresUser: false, // ✅ Đánh dấu route cần UserLayout
+    requiresAdmin: false,
   },
 ];
 

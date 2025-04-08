@@ -12,7 +12,7 @@ export const setTokenToCookies = (cookiesName: string, token: string) => {
   Cookies.set(cookiesName, token, {
     expires: Math.floor((exp - iat) / (60 * 60 * 24)), // number of days the token will exist
     path: "/", // pages where the token is valid
-    sameSite: "strict", // Block all requests from other sites (prevent CSRF).
+    sameSite: "lax", // <-- sửa ở đây
   });
 };
 

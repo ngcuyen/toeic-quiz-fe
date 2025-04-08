@@ -1,21 +1,54 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CheckCircle, ClipboardList, BookOpen, Calendar } from "lucide-react";
+import { getAllQuizSessions } from "../../api/quiz-sessionApi";
+import { getExamById } from "../../api/examApi";
+import { QuizSession } from "../../@type/quiz-session.type";
 
 interface ExamHistory {
-  id: number;
+  id: string;
   title: string;
   date: string;
   correctAnswers: number;
   totalQuestions: number;
 }
 
-const examHistoryData: ExamHistory[] = [
-  { id: 1, title: "Toeic Reading Test 1", date: "2025-03-25", correctAnswers: 45, totalQuestions: 100 },
-  { id: 2, title: "Toeic Reading Test 2", date: "2025-03-20", correctAnswers: 90, totalQuestions: 120 },
-  { id: 3, title: "Toeic Reading Test 3", date: "2025-03-15", correctAnswers: 78, totalQuestions: 100 },
-];
-
 const ExamHistoryList: React.FC = () => {
+  const [examHistoryData, setExamHistoryData] = useState<ExamHistory[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const sessions: QuizSession[] = (await getAllQuizSessions()) ?? [];
+
+      if (Array.isArray(sessions)) {
+        const mapped = await Promise.all(
+          sessions.map(async (session): Promise<ExamHistory> => {
+            let title = session.exam_id;
+            try {
+              const exam = await getExamById(session.exam_id);
+              title = exam?.title || session.exam_id;
+            } catch {
+              console.warn(`Không thể lấy exam với ID: ${session.exam_id}`);
+            }
+
+            return {
+              id: session._id,
+              title,
+              date: session.start_time.split("T")[0],
+              correctAnswers: parseInt(String(session.score).split("/")[0]) || 0,
+              totalQuestions: parseInt(String(session.score).split("/")[1]) || 0,
+            };
+          })
+        );
+
+        setExamHistoryData(mapped);
+      } else {
+        console.warn("Dữ liệu không phải là mảng:", sessions);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
   const totalExams = examHistoryData.length;
   const aboveAverageExams = examHistoryData.filter(
     (exam) => exam.correctAnswers / exam.totalQuestions > 0.5
@@ -52,10 +85,10 @@ const ExamHistoryList: React.FC = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-        <div className="grid grid-cols-3 gap-6">
+    <div className="max-w-7xl mx-auto px-6 py-10">
+        <div className="flex gap-6 items-start">
             {/* Exam History Section (2/3 chiều rộng) */}
-            <div className="col-span-2 bg-white shadow-lg rounded-lg p-6">
+            <div className="flex-1 bg-white shadow-lg rounded-lg p-6">
                 <h2 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-4">
                     <ClipboardList className="w-6 h-6 text-orange-500" /> LỊCH SỬ CÁC BÀI ĐÃ LÀM
                 </h2>
@@ -81,10 +114,7 @@ const ExamHistoryList: React.FC = () => {
             </div>
 
             {/* Statistics Section (1/3 chiều rộng) */}
-            <div className="col-span-1 bg-white shadow-lg rounded-lg p-5">
-                {/* <h2 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-4">
-                    <ClipboardList className="w-6 h-6 text-blue-500" /> Thống kê bài kiểm tra
-                </h2> */}
+            <div className="bg-white shadow-lg rounded-lg p-5 self-start">
                 <div className="space-y-3 bg-gray-100 rounded-lg p-2">
                     {stats.map((stat) => (
                     <div key={stat.id} className="flex items-center p-4">

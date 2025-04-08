@@ -1,17 +1,33 @@
-import ExamHistoryList from "../pages/Exam History";
-import ReadingTest from "../pages/Reading Test";
+import ExamHistoryList from "../pages/ExamHistory";
+import FormAddQuestion from "../pages/FormAddQuestion";
+import ReadingTest from "../pages/ReadingTest";
+import TestResult from "../pages/TestResult";
 
 
 const privateRoutes = [
   {
     path: '/reading-test',
     element: <ReadingTest />,
-    requiresUser: true, // 
+    requiresUser: true, 
+    requiresAdmin: false,
   },
   {
     path: '/history-exam',
     element: <ExamHistoryList />,
-    requiresUser: true, // 
+    requiresUser: true, 
+    requiresAdmin: false,
+  },
+  {
+    path: '/test-result',
+    element: <TestResult />,
+    requiresUser: true, 
+    requiresAdmin: false,
+  },
+  {
+    path: '/admin/dashboard',
+    element: <FormAddQuestion />,
+    requiresUser: false, 
+    requiresAdmin: true,
   },
 ];
 
