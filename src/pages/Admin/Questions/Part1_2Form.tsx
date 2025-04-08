@@ -4,8 +4,14 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowLeft, Save, Trash2, Upload } from "lucide-react";
-import { mockPart1Questions } from "../../../mocks/questions.mock";
 import { Part1Question } from "../../../@type/question.type";
+import {
+  fetchQuestionById,
+  createPart1or2Question,
+  updatePart1or2Question,
+  uploadQuestionImage,
+} from "../../../api/adminApi";
+import { ERROR_TOAST, SUCCESS_TOAST } from "../../../constants/notifications";
 
 // Form validation schema
 const part1_2Schema = z.object({
@@ -54,29 +60,37 @@ const Part1_2Form = () => {
   const selectedPart = watch("part");
 
   useEffect(() => {
-    if (isEditMode) {
-      // In a real app, this would be an API call
-      setLoading(true);
-      setTimeout(() => {
-        const question = mockPart1Questions.find((q) => q.id === id);
-        if (question) {
-          reset({
-            part: question.part,
-            questionText: question.questionText,
-            optionA: question.options[0],
-            optionB: question.options[1],
-            optionC: question.options[2],
-            optionD: question.options[3],
-            correctAnswer: question.correctAnswer,
-          });
+    const loadQuestion = async () => {
+      if (isEditMode && id) {
+        try {
+          setLoading(true);
+          const question = await fetchQuestionById(id);
 
-          if (question.imageUrl) {
-            setImagePreview(question.imageUrl);
+          if (question) {
+            reset({
+              part: question.part,
+              questionText: question.questionText,
+              optionA: question.options[0],
+              optionB: question.options[1],
+              optionC: question.options[2],
+              optionD: question.options[3],
+              correctAnswer: question.correctAnswer,
+            });
+
+            if (question.imageUrl) {
+              setImagePreview(question.imageUrl);
+            }
           }
+        } catch (error) {
+          ERROR_TOAST((error as Error).message || "Failed to load question");
+          console.error("Error loading question:", error);
+        } finally {
+          setLoading(false);
         }
-        setLoading(false);
-      }, 500);
-    }
+      }
+    };
+
+    loadQuestion();
   }, [id, isEditMode, reset]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,19 +120,29 @@ const Part1_2Form = () => {
         correctAnswer: data.correctAnswer,
       };
 
-      // In a real app, this would be an API call to upload the image and save the question
-      console.log("Submitting question:", questionData);
-      console.log("Image file:", imageFile);
+      // Upload image if provided
+      if (imageFile) {
+        const uploadResult = await uploadQuestionImage(imageFile);
+        questionData.imageUrl = uploadResult.imageUrl;
+      } else if (imagePreview && !imageFile && isEditMode) {
+        // Keep existing image URL if in edit mode and no new image was uploaded
+        questionData.imageUrl = imagePreview;
+      }
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Create or update the question
+      if (isEditMode && id) {
+        await updatePart1or2Question(id, questionData);
+        SUCCESS_TOAST("Question updated successfully!");
+      } else {
+        await createPart1or2Question(questionData);
+        SUCCESS_TOAST("Question created successfully!");
+      }
 
-      // Success message and redirect
-      alert(`Question ${isEditMode ? "updated" : "created"} successfully!`);
+      // Redirect back to questions list
       navigate("/admin/questions");
     } catch (error) {
+      ERROR_TOAST((error as Error).message || "Failed to save question");
       console.error("Error submitting question:", error);
-      alert("An error occurred. Please try again.");
     }
   };
 

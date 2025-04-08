@@ -1,19 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, Filter, Edit, Trash2, Eye } from "lucide-react";
-import {
-  getAllQuestions,
-  getQuestionsByPart,
-} from "../../../mocks/questions.mock";
+import { fetchQuestions, deleteQuestion } from "../../../api/adminApi";
 import {
   Part1Question,
   Passage,
   QuestionFilter,
 } from "../../../@type/question.type";
+import { ERROR_TOAST, SUCCESS_TOAST } from "../../../constants/notifications";
 
 const QuestionsManagement = () => {
   const [questions, setQuestions] = useState<(Part1Question | Passage)[]>([]);
   const [loading, setLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
   const [filters, setFilters] = useState<QuestionFilter>({
     part: undefined,
     search: "",
@@ -21,43 +20,22 @@ const QuestionsManagement = () => {
     limit: 10,
   });
 
-  useEffect(() => {
-    // Simulate API call with loading state
-    setLoading(true);
-    setTimeout(() => {
-      let filteredQuestions;
-
-      if (filters.part) {
-        filteredQuestions = getQuestionsByPart(filters.part);
-      } else {
-        filteredQuestions = getAllQuestions();
-      }
-
-      // Apply search filter if provided
-      if (filters.search) {
-        filteredQuestions = filteredQuestions.filter((q) => {
-          if ("passageText" in q) {
-            return (
-              q.passageText
-                .toLowerCase()
-                .includes(filters.search!.toLowerCase()) ||
-              q.questions.some((subQ) =>
-                subQ.questionText
-                  .toLowerCase()
-                  .includes(filters.search!.toLowerCase())
-              )
-            );
-          } else {
-            return q.questionText
-              .toLowerCase()
-              .includes(filters.search!.toLowerCase());
-          }
-        });
-      }
-
-      setQuestions(filteredQuestions);
+  const loadQuestions = async () => {
+    try {
+      setLoading(true);
+      const response = await fetchQuestions(filters);
+      setQuestions(response.items || []);
+      setTotalCount(response.totalCount || 0);
+    } catch (error) {
+      ERROR_TOAST((error as Error).message || "Failed to load questions");
+      console.error("Error loading questions:", error);
+    } finally {
       setLoading(false);
-    }, 500); // Simulate network delay
+    }
+  };
+
+  useEffect(() => {
+    loadQuestions();
   }, [filters]);
 
   const handleFilterChange = (
@@ -70,19 +48,26 @@ const QuestionsManagement = () => {
     setFilters((prev) => ({ ...prev, search: e.target.value, page: 1 }));
   };
 
-  const handleDelete = (id: string | undefined) => {
+  const handleDelete = async (id: string | undefined) => {
     if (!id) return;
 
-    // In a real app, this would be an API call
     const confirmed = window.confirm(
       "Are you sure you want to delete this question?"
     );
+
     if (confirmed) {
-      // Filter out the deleted question
-      const updatedQuestions = questions.filter((q) => q.id !== id);
-      setQuestions(updatedQuestions);
-      // Here you would make an API call to delete the question
-      console.log(`Question ${id} deleted`);
+      try {
+        setLoading(true);
+        await deleteQuestion(id);
+        SUCCESS_TOAST("Question deleted successfully");
+        // Reload the questions list
+        loadQuestions();
+      } catch (error) {
+        ERROR_TOAST((error as Error).message || "Failed to delete question");
+        console.error("Error deleting question:", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -237,12 +222,18 @@ const QuestionsManagement = () => {
         </div>
       )}
 
-      {/* Pagination - simplified for this example */}
+      {/* Pagination */}
       <div className="mt-6 flex justify-between items-center">
         <div className="text-sm text-gray-500">
-          Showing {Math.min(1, questions.length)} to{" "}
-          {Math.min(filters.limit || 10, questions.length)} of{" "}
-          {questions.length} results
+          {totalCount > 0 ? (
+            <>
+              Showing {(filters.page! - 1) * filters.limit! + 1} to{" "}
+              {Math.min(filters.page! * filters.limit!, totalCount)} of{" "}
+              {totalCount} results
+            </>
+          ) : (
+            "No results found"
+          )}
         </div>
         <div className="flex space-x-1">
           <button
@@ -259,7 +250,7 @@ const QuestionsManagement = () => {
           </button>
           <button
             className="px-3 py-1 border border-gray-300 rounded-md text-sm disabled:opacity-50"
-            disabled={questions.length < (filters.limit || 10)}
+            disabled={(filters.page || 1) * (filters.limit || 10) >= totalCount}
             onClick={() =>
               setFilters((prev) => ({ ...prev, page: (prev.page || 1) + 1 }))
             }

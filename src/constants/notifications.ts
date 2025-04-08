@@ -1,3 +1,6 @@
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export const NOTIFICATIONS = {
     ERROR: {
       SYSTEM: "An unexpected error occurred!",
@@ -20,9 +23,25 @@ export const NOTIFICATIONS = {
       },
     }
   };
-  
-  export const ERROR_TOAST = (message: string) => ({
-    title: "Error!",
-    variant: "destructive" as const,
-    description: message,
-  });
+
+  export const ERROR_TOAST = (message: string) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };
+
+  export const SUCCESS_TOAST = (message: string) => {
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  };

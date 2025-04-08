@@ -2,6 +2,7 @@ import Dashboard from "../pages/Admin/Dashboard";
 import QuestionsManagement from "../pages/Admin/Questions";
 import Part1_2Form from "../pages/Admin/Questions/Part1_2Form";
 import Part3_4Form from "../pages/Admin/Questions/Part3_4Form";
+import QuestionView from "../pages/Admin/Questions/QuestionView";
 
 const adminRoutes = [
   {
@@ -12,6 +13,11 @@ const adminRoutes = [
   {
     path: "/admin/questions",
     element: <QuestionsManagement />,
+    requiresAdmin: true,
+  },
+  {
+    path: "/admin/questions/view/:id",
+    element: <QuestionView />,
     requiresAdmin: true,
   },
   {
