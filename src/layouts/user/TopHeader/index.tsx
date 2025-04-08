@@ -25,12 +25,17 @@ const TopHeader = () => {
     };
   }, []);
 
-  // Hàm xử lý đăng xuất
 
   return (
-    <div className="bg-white pt-4 pb-3 text-gray-800 text-sm">
+    <div className="bg-white pt-1 pb-3 text-gray-800 text-sm">
       <div className="container mx-auto flex justify-between items-center px-8">
-        <div className="text-orange-600 font-bold text-lg">TOEIC® Test Pro</div>
+        {/* <div className="text-orange-600 font-bold text-lg">TOEIC® Test Pro</div> */}
+        <img
+          src="/images/logo/logo_den.png" // Logo của bạn
+          className="w-[100px] cursor-pointer"
+          onClick={() => navigate("/")}
+          alt="Logo"
+        />
 
         {/* Search */}
         <div className="flex items-center w-96 bg-white rounded-full border border-gray-300 px-4 py-1  shadow-sm">
@@ -47,7 +52,7 @@ const TopHeader = () => {
           { !user ? (
             <>
               <a
-                href="https://itcoder.hutech.edu.vn/site/signup"
+                href="#"
                 className="flex items-center gap-2 hover:text-indigo-800"
               >
                 <User className="w-4 h-4 text-gray-900" />

@@ -4,6 +4,7 @@ import UserLayout from '../layouts/user';
 import publicRoutes from './PublicRoute';
 import { Fragment } from 'react/jsx-runtime';
 import privateRoutes from './PrivateRoute';
+import AdminLayout from '../layouts/admin';
 
 
 const AppRoute = () => {
@@ -13,7 +14,7 @@ const AppRoute = () => {
         {/* Public routes */}
         {publicRoutes.map((route, index) => {
           // Chọn layout dựa trên requiresUser
-          const Layout = route.requiresUser ? UserLayout : Fragment;
+          const Layout = route.requiresUser ? UserLayout : route.requiresAdmin ? AdminLayout : Fragment;
 
           return (
             <Route
@@ -27,7 +28,7 @@ const AppRoute = () => {
         {/* Private routes */}
         {privateRoutes.map((route, index) => {
           // Chọn layout dựa trên requiresUser
-          const Layout = route.requiresUser ? UserLayout : Fragment;
+          const Layout = route.requiresUser ? UserLayout : route.requiresAdmin ? AdminLayout : Fragment;
 
           return (
             <Route

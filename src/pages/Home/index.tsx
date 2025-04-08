@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
-import Banner from "../../components/Banner";
-import Feature from "../../components/Feature";
-import QuestionTypeList from "../../components/QuestionTypeList";
+import Banner from "../../components/user/Banner";
+import Feature from "../../components/user/Feature";
+import QuestionTypeList from "../../components/user/QuestionTypeList";
 
 const Home = () => {
   const [showScroll, setShowScroll] = useState(false);

@@ -13,10 +13,10 @@ export const NOTIFICATIONS = {
         },
       },
     },
-    CART: {
-      TOAST: {
+    QUESTION: {
+      TOAST: {  
         title: "Successfully!",
-        description: "You have already added this product to cart.",
+        description: "Tạo câu hỏi thành công.",
       },
     }
   };

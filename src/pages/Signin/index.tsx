@@ -30,6 +30,7 @@ function Signin() {
     try {
       setLoading(true);
       await loginAction(data); // Call loginAction with data
+
       const userData = await getProfile(); // Get user data
       setUser(userData); // Set user data to the store
       // toast.success("Đăng nhập thành công!", {
