@@ -13,3 +13,11 @@ export type Question = {
 
 // 👉 Dùng khi tạo mới câu hỏi (không cần _id)
 export type QuestionCreate = Omit<Question, "_id">;
+
+// Question có thêm trường created_at
+export type QuestionWithDate = Question & {
+    created_at: string;
+};
+
+
+  

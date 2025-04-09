@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { CheckCircle, Timer, BarChart3, RotateCcw } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { CheckCircle, Timer, BarChart3, Home } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getQuizSessionById } from "../../api/quiz-sessionApi";
 import { QuizSession } from "../../@type/quiz-session.type";
 
 const TestResult: React.FC = () => {
+  const navigate = useNavigate();
   // Lấy quizSessionId từ state của location
   const location = useLocation();
-  const { quizSessionId } = location.state || {};
+  const { quizSessionId, userAnswers } = location.state || {};
   const [quizSession, setQuizSession] = useState<QuizSession | null>(null);
 
   useEffect(() => {
+    console.log("📦 userAnswer:", userAnswers);
+
     const fetchData = async () => {
       if (quizSessionId) {
         const data = await getQuizSessionById(quizSessionId);
@@ -82,15 +85,22 @@ const TestResult: React.FC = () => {
         <div className="flex justify-center gap-4 mt-6">
           <button
             className="flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl shadow"
-            onClick={() => window.location.href = "/practice"}
+            onClick={() => navigate("/")}
           >
-            <RotateCcw className="w-5 h-5" />
-            Luyện lại
+            <Home className="w-5 h-5" />
+            Về trang chủ
           </button>
 
           <button
             className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl shadow"
-            onClick={() => alert("Tính năng xem đáp án đang phát triển")}
+            onClick={() =>
+              navigate("/test-answer", {
+                state: {
+                  examId: quizSession.exam_id,
+                  userAnswers: userAnswers,
+                },
+              })
+            }
           >
             <BarChart3 className="w-5 h-5" />
             Xem đáp án
