@@ -36,8 +36,8 @@ const FormAddQuestion = () => {
   return (
     <>
       {/* Phần chọn loại câu hỏi */}
-      <div className="max-w-md mx-auto p-4 bg-white rounded-2xl shadow-md space-y-4">
-        <label htmlFor="questionType" className="block text-base font-semibold">
+      <div className="max-w-[470px] mx-auto px-5 py-6 bg-white rounded-2xl shadow-md space-y-3">
+        <label htmlFor="questionType" className="block text-lg text-center uppercase text-orange-600 font-bold">
           Chọn loại câu hỏi
         </label>
         <select

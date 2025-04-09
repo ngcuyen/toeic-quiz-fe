@@ -4,7 +4,7 @@ import { Question } from "../../@type/question.type";
 import { getCategory } from "../../api/categoryApi";
 import { Category } from "../../@type/category.type";
 import { getQuestionById } from "../../api/questionApi";
-import ReadingTestCard from "../../components/user/ReadingTestCard";
+import ReadingTestCard from "../../components/user/ReadingTest/ReadingTestCard";
 
 const ReadingTest = () => {
   const currentDate = new Date().toLocaleDateString("vi-VN");
@@ -17,7 +17,6 @@ const ReadingTest = () => {
   // Lấy dữ liệu câu hỏi từ state (truyền qua navigate)
   const location = useLocation();  
   const { questions: questionsFromState } = location.state || {};
-
 
   useEffect(() => {
     console.log("questionsFromState:", questionsFromState); // Log câu hỏi từ state
@@ -67,7 +66,6 @@ const ReadingTest = () => {
 
   useEffect(() => {
     console.log("questions:", questions); // Log câu hỏi hiện tại
-    console.log("categories:", categories); // Log danh mục hiện tại
     if (categories.length > 0 && questions.length > 0) {
       // Phân loại câu hỏi theo category_id
       const part1: Question[] = [];

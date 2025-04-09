@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from "../constants/apiEndpoints";
-import { Question, QuestionCreate } from "../@type/question.type"; // Import kiểu Question
+import { Question, QuestionCreate, QuestionWithDate } from "../@type/question.type"; // Import kiểu Question
 import { ERROR_TOAST, NOTIFICATIONS } from "../constants/notifications"; // Import thông báo
 import axiosInstance from "../libs/axiosInstance"; // Đảm bảo sử dụng axiosInstance nếu có interceptor
 import { AxiosError } from "axios";
@@ -70,3 +70,32 @@ export const getQuestionById = async (id: string): Promise<Question> => {
     }
   };
   
+
+  // Hàm lấy tất cả câu hỏi
+  export const getAllQuestions = async (): Promise<QuestionWithDate[]> => {
+    try {
+      const response = await axiosInstance.get(API_ENDPOINTS.QUESTIONS.GET_ALLS);
+  
+      const items = response.data?.data?.items; // <== sửa tại đây
+  
+      if (!Array.isArray(items)) {
+        console.error("Dữ liệu trả về không phải là mảng:", response.data?.data);
+        return [];
+      }
+  
+      return items;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.error("Lỗi khi lấy danh sách câu hỏi:", error);
+        const errorMessage = error.response?.data?.message || NOTIFICATIONS.ERROR.SYSTEM;
+        console.error(ERROR_TOAST(errorMessage));
+      } else {
+        console.error("Lỗi không phải là AxiosError:", error);
+        console.error(ERROR_TOAST(NOTIFICATIONS.ERROR.UNDEFINED));
+      }
+      throw error;
+    }
+  };
+  
+  
+
